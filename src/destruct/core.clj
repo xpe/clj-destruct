@@ -12,6 +12,7 @@
 ;   * 'kk' means 'the example uses :keys twice'
 ;     (but such examples do not work)
 
+; Let's start with a simple example.
 (defn d1
   [{a :a
     b :b}]
@@ -22,6 +23,7 @@
 ; "b" 2
 ; nil
 
+; Let's add `:keys`.
 (defn d1k
   [{:keys [a b]}]
   (prn "a" a)
@@ -31,6 +33,7 @@
 ; "b" 2
 ; nil
 
+; Let's modify `d1` to use `:as`.
 (defn d1a
   [{a :a
     b :b
@@ -43,6 +46,7 @@
 ; "b" 2
 ; "m" {:a 1, :b 2}
 
+; Let's modify `d1k` to use `:as`.
 (defn d1ka
   [{:keys [a b] :as m}]
   (prn "a" a)
@@ -53,6 +57,7 @@
 ; "b" 2
 ; "m" {:a 1, :b 2}
 
+; Let's add nesting to `d1`.
 (defn d2
   [{a :a
     {b1 :b1 b2 :b2} :b}]
@@ -64,6 +69,7 @@
 ; "b1" 3
 ; "b2" 4
 
+; Let's use `:as`.
 (defn d2a
   [{a :a
     {b1 :b1 b2 :b2} :b
@@ -78,6 +84,7 @@
 ; "b2" 4
 ; "m" {:a 1, :b {:b2 4, :b1 3}}
 
+; Let's use `:as` twice.
 (defn d2aa
   [{a :a
     {b1 :b1 b2 :b2 :as b} :b
@@ -94,6 +101,7 @@
 ; "b" {:b2 4, :b1 3}
 ; "m" {:a 1, :b {:b2 4, :b1 3}}
 
+; Let's change `d2` to use `:keys`.
 (defn d2k
   [{a :a
     {:keys [b1 b2]} :b}]
@@ -105,6 +113,7 @@
 ; "b1" 3
 ; "b2" 4
 
+; Let's change `d2k` to use `:as`.
 (defn d2ka
   [{a :a
     {:keys [b1 b2] :as b} :b}]
@@ -118,6 +127,7 @@
 ; "b2" 4
 ; "b" {:b2 4, :b1 3}
 
+; Let's use `:as` twice.
 (defn d2kaa
   [{a :a
     {:keys [b1 b2] :as b} :b
@@ -134,6 +144,7 @@
 ; "b" {:b2 4, :b1 3}
 ; "m" {:a 1, :b {:b2 4, :b1 3}}
 
+; Can we nest `:keys` inside `:keys`?
 (defn d2kk1!
   [{:keys [a {:keys [b1 b2]}]}]
   (prn "a" a)
@@ -147,8 +158,8 @@
 ; "b2" nil
 ;
 ; But how could it work? It has no way of knowing about `:b`.
-; So, next, let's try to add `:b` somehow.
 
+; Next, let's try to add `:b` somehow.
 (defn d2kk2!
   [{:keys [a {:keys [b1 b2] :as b}]}]
   (prn "a" a)
