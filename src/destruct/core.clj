@@ -180,17 +180,44 @@
 ; Clojure had enough information (right?) but didn't do it.
 ; Perhaps there is room for improvement in Clojure destructuring?
 
-; ----------
+; Or perhaps there is another way?
 
-; To compare and conclude:
-;
-; 1. Both `d2aa` and `d2kaa` show how to destructure while keeping
-;    all intermediate data structures.
-; 2. `d2kaa` is only slightly more compact than `d2aa`.
+; There is, thanks to a suggestion from Karsten Schmidt on the Clojure
+; mailing list:
+; https://groups.google.com/forum/#!topic/clojure/t8qAzzhRuos
 
-; ----------
+; This is how you nest `:keys` multiple times:
+(defn d2kka
+  [{:keys [a]
+    {:keys [b1 b2] :as b} :b}]
+  (prn "a" a)
+  (prn "b" b)
+  (prn "b1" b1)
+  (prn "b2" b2))
+; (d2kka {:a 1 :b {:b1 3 :b2 4}})
+; "a" 1
+; "b" {:b2 4, :b1 3}
+; "b1" 3
+; "b2" 4
 
-; To generalize and comment about nested destructuring:
-;
-; * You cannot nest inside the `:keys` destructuring form.
-; * You *can* nest inside the other destructuring forms.
+; Note that you don't literally nest `:keys` inside the vector.
+
+; Let's use `:as` twice to get the entire data structure as well:
+(defn d2kkaa
+  [{:keys [a]
+    {:keys [b1 b2] :as b} :b
+   :as m}]
+  (prn "m" m)
+  (prn "a" a)
+  (prn "b" b)
+  (prn "b1" b1)
+  (prn "b2" b2))
+; (d2kkaa {:a 1 :b {:b1 3 :b2 4}})
+; "m" {:a 1, :b {:b2 4, :b1 3}}
+; "a" 1
+; "b" {:b2 4, :b1 3}
+; "b1" 3
+; "b2" 4
+
+; I think that walks through map destructuring in plenty of detail.
+; Let me know if you have questions or suggestions.
