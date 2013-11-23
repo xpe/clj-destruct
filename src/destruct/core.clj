@@ -38,24 +38,24 @@
   [{a :a
     b :b
     :as m}]
+  (prn "m" m)
   (prn "a" a)
-  (prn "b" b)
-  (prn "m" m))
+  (prn "b" b))
 ; (d1a {:a 1 :b 2})
+; "m" {:a 1, :b 2}
 ; "a" 1
 ; "b" 2
-; "m" {:a 1, :b 2}
 
 ; Let's modify `d1k` to use `:as`.
 (defn d1ka
   [{:keys [a b] :as m}]
+  (prn "m" m)
   (prn "a" a)
-  (prn "b" b)
-  (prn "m" m))
+  (prn "b" b))
 ; (d1ka {:a 1 :b 2})
+; "m" {:a 1, :b 2}
 ; "a" 1
 ; "b" 2
-; "m" {:a 1, :b 2}
 
 ; Let's add nesting to `d1`.
 (defn d2
@@ -74,26 +74,26 @@
   [{a :a
     {b1 :b1 b2 :b2} :b
    :as m}]
+  (prn "m" m)
   (prn "a" a)
   (prn "b1" b1)
-  (prn "b2" b2)
-  (prn "m" m))
+  (prn "b2" b2))
 ; (d2a {:a 1 :b {:b1 3 :b2 4}})
+; "m" {:a 1, :b {:b2 4, :b1 3}}
 ; "a" 1
 ; "b1" 3
 ; "b2" 4
-; "m" {:a 1, :b {:b2 4, :b1 3}}
 
 ; Let's use `:as` twice.
 (defn d2aa
   [{a :a
     {b1 :b1 b2 :b2 :as b} :b
    :as m}]
+  (prn "m" m)
   (prn "a" a)
-  (prn "b1" b1)
-  (prn "b2" b2)
   (prn "b" b)
-  (prn "m" m))
+  (prn "b1" b1)
+  (prn "b2" b2))
 ; (d2aa {:a 1 :b {:b1 3 :b2 4}})
 ; "a" 1
 ; "b1" 3
@@ -118,14 +118,14 @@
   [{a :a
     {:keys [b1 b2] :as b} :b}]
   (prn "a" a)
+  (prn "b" b)
   (prn "b1" b1)
-  (prn "b2" b2)
-  (prn "b" b))
+  (prn "b2" b2))
 ; (d2ka {:a 1 :b {:b1 3 :b2 4}})
 ; "a" 1
+; "b" {:b2 4, :b1 3}
 ; "b1" 3
 ; "b2" 4
-; "b" {:b2 4, :b1 3}
 
 ; Let's use `:as` twice.
 (defn d2kaa
@@ -133,24 +133,24 @@
     {:keys [b1 b2] :as b} :b
     :as m}]
   (prn "a" a)
+  (prn "b" b)
   (prn "b1" b1)
   (prn "b2" b2)
-  (prn "b" b)
   (prn "m" m))
 ; (d2kaa {:a 1 :b {:b1 3 :b2 4}})
 ; "a" 1
+; "b" {:b2 4, :b1 3}
 ; "b1" 3
 ; "b2" 4
-; "b" {:b2 4, :b1 3}
 ; "m" {:a 1, :b {:b2 4, :b1 3}}
 
 ; Can we nest `:keys` inside `:keys`?
-(defn d2kk1!
+(defn d2kk!
   [{:keys [a {:keys [b1 b2]}]}]
   (prn "a" a)
   (prn "b1" b1)
   (prn "b2" b2))
-; (d2kk1! {:a 1 :b {:b1 3 :b2 4}})
+; (d2kk! {:a 1 :b {:b1 3 :b2 4}})
 ;
 ; It does not work:
 ; "a" 1
@@ -160,13 +160,13 @@
 ; But how could it work? It has no way of knowing about `:b`.
 
 ; Next, let's try to add `:b` somehow.
-(defn d2kk2!
+(defn d2kka!
   [{:keys [a {:keys [b1 b2] :as b}]}]
   (prn "a" a)
   (prn "b" b)
   (prn "b1" b1)
   (prn "b2" b2))
-; (d2kk2! {:a 1 :b {:b1 3 :b2 4}})
+; (d2kka! {:a 1 :b {:b1 3 :b2 4}})
 ;
 ; It does not work:
 ; "a" 1
